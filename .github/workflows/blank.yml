@@ -4,8 +4,8 @@ name: AWS example workflow
 on:
   push
 env:
-  BUCKET_NAME : "<example-bucket-name>"
-  AWS_REGION : "<example-aws-region>"
+  BUCKET_NAME : "testbucket101544370400"
+  AWS_REGION : "eu-west-1"
 # permission can be added at job level or workflow level    
 permissions:
       id-token: write   # This is required for requesting the JWT
@@ -19,7 +19,7 @@ jobs:
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: arn:aws:iam::1234567890:role/example-role
+          role-to-assume: arn:aws:iam::101544370400:role/GitHubAction-AssumeRoleWithAction
           role-session-name: samplerolesession
           aws-region: ${{ env.AWS_REGION }}
       # Upload a file to AWS s3
