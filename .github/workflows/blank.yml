@@ -1,28 +1,39 @@
-# Sample workflow to access AWS resources when workflow is tied to branch
-# The workflow Creates static website using aws s3
-name: AWS example workflow
+
+
+
+# This is a basic workflow to help you get started with Actions
+name:Connect to an AWS role from a GitHub repository
+
+# Controls when the action will run. Invokes the workflow on push events but only for the main branch
 on:
-  push
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
 env:
-  BUCKET_NAME : "testbucket101544370400"
-  AWS_REGION : "eu-west-1"
-# permission can be added at job level or workflow level    
+  
+  AWS_REGION : <"us-east-1"> #Change to reflect your Region
+
+# Permission can be added at job level or workflow level    
 permissions:
       id-token: write   # This is required for requesting the JWT
       contents: read    # This is required for actions/checkout
 jobs:
-  S3PackageUpload:
+  AssumeRoleAndCallIdentity:
     runs-on: ubuntu-latest
     steps:
       - name: Git clone the repository
         uses: actions/checkout@v3
       - name: configure aws credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v1.7.0
         with:
-          role-to-assume: arn:aws:iam::101544370400:role/GitHubAction-AssumeRoleWithAction
-          role-session-name: samplerolesession
+          role-to-assume: role-to-assume: arn:aws:iam::101544370400:role/GitHubAction-AssumeRoleWithAction #change to reflect your IAM role’s ARN
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
           aws-region: ${{ env.AWS_REGION }}
-      # Upload a file to AWS s3
-      - name:  Copy index.html to s3
+      # Hello from AWS: WhoAmI
+      - name: Sts GetCallerIdentity
         run: |
-          aws s3 cp ./index.html s3://${{ env.BUCKET_NAME }}/
+          aws sts get-caller-identity
+
+     
