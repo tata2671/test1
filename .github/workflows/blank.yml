@@ -30,6 +30,6 @@ jobs:
       # Hello from AWS: WhoAmI
       - name: Sts GetCallerIdentity
         run: |
-          aws iam list-users
+          aws iam list-roles
 
      
